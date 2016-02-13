@@ -1,20 +1,15 @@
-FROM node:argon
+FROM node:0.10
 
-# Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+# make sure you copy your backlog.db, config.json and tapchat.pem to ./config/
+ADD ./config/ /.tapchat
+WORKDIR /
 
 # install all dependencies and prerequisites
-RUN curl -sL https://deb.nodesource.com/setup | bash -
 RUN apt-get update && apt-get -y dist-upgrade
-RUN apt-get -y install nodejs libsqlite3-dev build-essential
 
 # will install tapchat
-RUN npm install tapchat -g
-
-# Bundle app source
-COPY . /usr/src/app
+RUN npm install tapchat coffee-script -g
 
 EXPOSE 8067
-CMD [ "tapchat", "start -f" ]
+CMD [ "tapchat", "start", "-f" ]
 
